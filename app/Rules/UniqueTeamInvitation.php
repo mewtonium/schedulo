@@ -1,14 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Rules;
 
 use App\Models\Team;
 use App\Models\TeamInvitation;
-use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Translation\PotentiallyTranslatedString;
 
-class UniqueTeamInvitation implements ValidationRule
+final class UniqueTeamInvitation implements ValidationRule
 {
     public function __construct(protected Team $team)
     {
@@ -18,11 +19,11 @@ class UniqueTeamInvitation implements ValidationRule
     /**
      * Run the validation rule.
      *
-     * @param  Closure(string, ?string=): PotentiallyTranslatedString  $fail
+     * @param  \Closure(string, ?string=): PotentiallyTranslatedString  $fail
      */
-    public function validate(string $attribute, mixed $value, Closure $fail): void
+    public function validate(string $attribute, mixed $value, \Closure $fail): void
     {
-        $email = strtolower($value);
+        $email = mb_strtolower($value);
 
         $isMember = $this->team->members()
             ->whereRaw('LOWER(email) = ?', [$email])

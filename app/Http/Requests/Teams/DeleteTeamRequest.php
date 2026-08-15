@@ -1,15 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests\Teams;
 
 use App\Models\Team;
-use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Validator;
 
-class DeleteTeamRequest extends FormRequest
+final class DeleteTeamRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -34,7 +35,7 @@ class DeleteTeamRequest extends FormRequest
     /**
      * Configure the validator instance.
      *
-     * @return array<int, Closure(Validator): void>
+     * @return array<int, \Closure(Validator): void>
      */
     public function after(): array
     {

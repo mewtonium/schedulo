@@ -1,22 +1,23 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Middleware;
 
 use App\Enums\TeamRole;
 use App\Models\Team;
 use App\Models\User;
-use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class EnsureTeamMembership
+final class EnsureTeamMembership
 {
     /**
      * Handle an incoming request.
      *
-     * @param  Closure(Request): (Response)  $next
+     * @param  \Closure(Request): (Response)  $next
      */
-    public function handle(Request $request, Closure $next, ?string $minimumRole = null): Response
+    public function handle(Request $request, \Closure $next, ?string $minimumRole = null): Response
     {
         [$user, $team] = [$request->user(), $this->team($request)];
 

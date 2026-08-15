@@ -1,14 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Rules;
 
 use App\Models\TeamInvitation;
 use App\Models\User;
-use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Translation\PotentiallyTranslatedString;
 
-class ValidTeamInvitation implements ValidationRule
+final class ValidTeamInvitation implements ValidationRule
 {
     public function __construct(protected ?User $user)
     {
@@ -18,9 +19,9 @@ class ValidTeamInvitation implements ValidationRule
     /**
      * Run the validation rule.
      *
-     * @param  Closure(string, ?string=): PotentiallyTranslatedString  $fail
+     * @param  \Closure(string, ?string=): PotentiallyTranslatedString  $fail
      */
-    public function validate(string $attribute, mixed $value, Closure $fail): void
+    public function validate(string $attribute, mixed $value, \Closure $fail): void
     {
         if (! $value instanceof TeamInvitation || ! $this->user instanceof User) {
             $fail(__('This invitation was sent to a different email address.'));
@@ -40,7 +41,7 @@ class ValidTeamInvitation implements ValidationRule
             return;
         }
 
-        if (strtolower($value->email) !== strtolower($this->user->email)) {
+        if (mb_strtolower($value->email) !== mb_strtolower($this->user->email)) {
             $fail(__('This invitation was sent to a different email address.'));
         }
     }

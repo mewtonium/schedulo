@@ -1,22 +1,23 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Middleware;
 
-use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response as HttpResponse;
 use Laravel\Telescope\Telescope;
 use Symfony\Component\HttpFoundation\Response;
 
-class TelescopeTheme
+final class TelescopeTheme
 {
     /**
      * Layer Telescope's dark stylesheet on top of the light one, applied only
      * when the visitor's operating system asks for a dark colour scheme.
      *
-     * @param  Closure(Request): (Response)  $next
+     * @param  \Closure(Request): (Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, \Closure $next): Response
     {
         $response = $next($request);
 

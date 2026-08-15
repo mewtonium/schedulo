@@ -1,23 +1,24 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Rules;
 
-use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Routing\Route as RouteElement;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Translation\PotentiallyTranslatedString;
 
-class TeamName implements ValidationRule
+final class TeamName implements ValidationRule
 {
     /**
      * Run the validation rule.
      *
-     * @param  Closure(string, ?string=): PotentiallyTranslatedString  $fail
+     * @param  \Closure(string, ?string=): PotentiallyTranslatedString  $fail
      */
-    public function validate(string $attribute, mixed $value, Closure $fail): void
+    public function validate(string $attribute, mixed $value, \Closure $fail): void
     {
-        $name = strtolower(trim($value));
+        $name = mb_strtolower(mb_trim($value));
 
         if (in_array($name, $this->reservedNames(), true)) {
             $fail(__('This team name is reserved and cannot be used.'));
