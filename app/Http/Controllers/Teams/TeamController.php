@@ -65,7 +65,7 @@ final class TeamController extends Controller
 
                 return [
                     'id' => $member->id,
-                    'name' => $member->name,
+                    'name' => $member->full_name,
                     'email' => $member->email,
                     'avatar' => $member->avatar ?? null,
                     'role' => $membership->role->value,

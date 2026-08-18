@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Form, Head } from '@inertiajs/vue3';
+import { computed } from 'vue';
 import InputError from '@/components/InputError.vue';
 import PasswordInput from '@/components/PasswordInput.vue';
 import TeamInvitationAlert from '@/components/TeamInvitationAlert.vue';
@@ -12,7 +13,7 @@ import { login } from '@/routes';
 import { store } from '@/routes/register';
 import type { TeamInvitationContext } from '@/types';
 
-defineProps<{
+const props = defineProps<{
     passwordRules: string;
     teamInvitation?: TeamInvitationContext | null;
 }>();
@@ -22,6 +23,16 @@ defineOptions({
         title: 'Create an account',
         description: 'Enter your details below to create your account',
     },
+});
+
+const loginUrl = computed(() => {
+    if (props.teamInvitation) {
+        return login.url({
+            query: { invitation: props.teamInvitation.code }
+        });
+    }
+
+    return login();
 });
 </script>
 
@@ -41,19 +52,36 @@ defineOptions({
         class="flex flex-col gap-6"
     >
         <div class="grid gap-6">
-            <div class="grid gap-2">
-                <Label for="name">Name</Label>
-                <Input
-                    id="name"
-                    type="text"
-                    required
-                    autofocus
-                    :tabindex="1"
-                    autocomplete="name"
-                    name="name"
-                    placeholder="Full name"
-                />
-                <InputError :message="errors.name" />
+            <div class="grid md:grid-cols-2 gap-4">
+                <div class="grid gap-2">
+                    <Label for="first_name">First name</Label>
+                    <Input
+                        id="first_name"
+                        type="text"
+                        required
+                        autofocus
+                        :tabindex="1"
+                        autocomplete="first_name"
+                        name="first_name"
+                        placeholder="First name"
+                    />
+                    <InputError :message="errors.first_name" />
+                </div>
+
+                <div class="grid gap-2">
+                    <Label for="last_name">Last name</Label>
+                    <Input
+                        id="last_name"
+                        type="text"
+                        required
+                        autofocus
+                        :tabindex="1"
+                        autocomplete="last_name"
+                        name="last_name"
+                        placeholder="Last name"
+                    />
+                    <InputError :message="errors.last_name" />
+                </div>
             </div>
 
             <div class="grid gap-2">
@@ -78,7 +106,6 @@ defineOptions({
                     :tabindex="3"
                     autocomplete="new-password"
                     name="password"
-                    placeholder="Password"
                     :passwordrules="passwordRules"
                 />
                 <InputError :message="errors.password" />
@@ -92,7 +119,6 @@ defineOptions({
                     :tabindex="4"
                     autocomplete="new-password"
                     name="password_confirmation"
-                    placeholder="Confirm password"
                     :passwordrules="passwordRules"
                 />
                 <InputError :message="errors.password_confirmation" />
@@ -113,20 +139,12 @@ defineOptions({
         <div class="text-center text-sm text-muted-foreground">
             Already have an account?
             <TextLink
-                :href="
-                    teamInvitation
-                        ? login.url({
-                              query: {
-                                  invitation: teamInvitation.code,
-                              },
-                          })
-                        : login()
-                "
+                :href="loginUrl"
                 class="underline underline-offset-4"
                 :tabindex="6"
                 data-test="team-invitation-login-link"
             >
-                Log in
+                Sign in
             </TextLink>
         </div>
     </Form>

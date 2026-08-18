@@ -44,18 +44,34 @@ const user = computed(() => page.props.auth.user);
             class="space-y-6"
             v-slot="{ errors, processing }"
         >
-            <div class="grid gap-2">
-                <Label for="name">Name</Label>
-                <Input
-                    id="name"
-                    class="mt-1 block w-full"
-                    name="name"
-                    :default-value="user.name"
-                    required
-                    autocomplete="name"
-                    placeholder="Full name"
-                />
-                <InputError class="mt-2" :message="errors.name" />
+            <div class="grid md:grid-cols-2 gap-4">
+                <div class="grid gap-2">
+                    <Label for="first_name">First name</Label>
+                    <Input
+                        id="first_name"
+                        class="mt-1 block w-full"
+                        name="first_name"
+                        :default-value="user.first_name"
+                        required
+                        autocomplete="first_name"
+                        placeholder="First name"
+                    />
+                    <InputError class="mt-2" :message="errors.first_name" />
+                </div>
+
+                <div class="grid gap-2">
+                    <Label for="last_name">Last name</Label>
+                    <Input
+                        id="last_name"
+                        class="mt-1 block w-full"
+                        name="last_name"
+                        :default-value="user.last_name"
+                        required
+                        autocomplete="last_name"
+                        placeholder="Last name"
+                    />
+                    <InputError class="mt-2" :message="errors.last_name" />
+                </div>
             </div>
 
             <div class="grid gap-2">
@@ -94,9 +110,7 @@ const user = computed(() => page.props.auth.user);
             </div>
 
             <div class="flex items-center gap-4">
-                <Button :disabled="processing" data-test="update-profile-button"
-                    >Save</Button
-                >
+                <Button :disabled="processing" data-test="update-profile-button">Save</Button>
             </div>
         </Form>
     </div>

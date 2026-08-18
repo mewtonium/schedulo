@@ -26,7 +26,7 @@ final class DashboardController extends Controller
             ->get()
             ->map(fn (TeamInvitation $invitation) => [
                 'code' => $invitation->code,
-                'inviterName' => $invitation->inviter->name,
+                'inviterName' => $invitation->inviter->full_name,
                 'team' => [
                     'name' => $invitation->team->name,
                     'slug' => $invitation->team->slug,
