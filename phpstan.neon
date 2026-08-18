@@ -3,6 +3,10 @@ includes:
     - vendor/nesbot/carbon/extension.neon
 
 parameters:
+    typeAliases:
+        RuleList: 'array<int, \Illuminate\Contracts\Validation\ValidationRule|\Stringable|array<mixed>|string>'
+        Rules: 'array<string, RuleList>'
+
     paths:
         - app/
         - bootstrap/app.php
