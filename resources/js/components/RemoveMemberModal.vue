@@ -32,7 +32,7 @@ const removeMember = () => {
         return;
     }
 
-    router.visit(destroyMember([props.team.slug, props.member.id]), {
+    router.visit(destroyMember([props.team.slug, props.member.ulid]), {
         onStart: () => (processing.value = true),
         onFinish: () => (processing.value = false),
         onSuccess: () => emit('update:open', false),

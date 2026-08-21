@@ -77,7 +77,7 @@ const pageTitle = computed(() =>
 );
 
 const updateMemberRole = (member: TeamMember, newRole: string) => {
-    router.visit(updateMember([props.team.slug, member.id]), {
+    router.visit(updateMember([props.team.slug, member.ulid]), {
         data: { role: newRole },
         preserveScroll: true,
     });
@@ -166,7 +166,7 @@ const confirmCancelInvitation = (invitation: TeamInvitation) => {
             <div class="space-y-3">
                 <div
                     v-for="member in members"
-                    :key="member.id"
+                    :key="member.ulid"
                     data-test="member-row"
                     class="flex items-center justify-between rounded-lg border p-4"
                 >

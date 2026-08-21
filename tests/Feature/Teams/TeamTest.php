@@ -67,6 +67,8 @@ test('the team edit page can be rendered', function () {
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page
             ->component('teams/Edit')
+            ->where('members.0.ulid', $user->ulid)
+            ->missing('members.0.id')
             ->where('members.0.role', TeamRole::Owner->value)
             ->where('members.0.role_label', TeamRole::Owner->label()),
         );

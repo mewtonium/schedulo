@@ -64,7 +64,7 @@ final class TeamController extends Controller
                 $membership = $member->getRelation('pivot');
 
                 return [
-                    'id' => $member->id,
+                    'ulid' => $member->ulid,
                     'name' => $member->full_name,
                     'email' => $member->email,
                     'avatar' => $member->avatar ?? null,

@@ -11,7 +11,7 @@ export type Team = {
 };
 
 export type TeamMember = {
-    id: number;
+    ulid: string;
     name: string;
     email: string;
     avatar?: string | null;
