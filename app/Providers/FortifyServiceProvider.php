@@ -17,6 +17,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rules\Password;
 use Inertia\Inertia;
 use Laravel\Fortify\Contracts\LoginResponse as LoginResponseContract;
 use Laravel\Fortify\Contracts\RegisterResponse as RegisterResponseContract;
@@ -72,6 +73,7 @@ final class FortifyServiceProvider extends ServiceProvider
 
         Fortify::resetPasswordView(fn (Request $request) => Inertia::render('auth/ResetPassword', [
             'email' => $request->email,
+            'passwordRules' => Password::defaults()->toPasswordRulesString(),
             'token' => $request->route('token'),
         ]));
 
@@ -84,6 +86,7 @@ final class FortifyServiceProvider extends ServiceProvider
         ]));
 
         Fortify::registerView(fn (Request $request) => Inertia::render('auth/Register', [
+            'passwordRules' => Password::defaults()->toPasswordRulesString(),
             'teamInvitation' => $this->teamInvitation($request),
         ]));
 

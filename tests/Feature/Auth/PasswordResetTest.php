@@ -5,6 +5,8 @@ declare(strict_types=1);
 use App\Models\User;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Validation\Rules\Password;
+use Inertia\Testing\AssertableInertia as Assert;
 use Laravel\Fortify\Features;
 
 beforeEach(function () {
@@ -38,6 +40,10 @@ test('reset password screen can be rendered', function () {
         $response = $this->get(route('password.reset', $notification->token));
 
         $response->assertOk();
+        $response->assertInertia(fn (Assert $page) => $page
+            ->component('auth/ResetPassword')
+            ->where('passwordRules', Password::defaults()->toPasswordRulesString()),
+        );
 
         return true;
     });

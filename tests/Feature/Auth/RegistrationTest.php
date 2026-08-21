@@ -6,12 +6,23 @@ use App\Enums\TeamRole;
 use App\Models\Team;
 use App\Models\TeamInvitation;
 use App\Models\User;
+use Illuminate\Validation\Rules\Password;
 use Inertia\Testing\AssertableInertia as Assert;
 
 test('registration screen can be rendered', function () {
     $response = $this->get(route('register'));
 
     $response->assertOk();
+});
+
+test('registration screen includes password rules', function () {
+    $response = $this->get(route('register'));
+
+    $response->assertOk();
+    $response->assertInertia(fn (Assert $page) => $page
+        ->component('auth/Register')
+        ->where('passwordRules', Password::defaults()->toPasswordRulesString()),
+    );
 });
 
 test('registration screen includes team invitation context', function () {
