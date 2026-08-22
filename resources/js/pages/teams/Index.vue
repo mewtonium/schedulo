@@ -67,7 +67,7 @@ defineOptions({
         <div class="space-y-3">
             <div
                 v-for="team in teams"
-                :key="team.id"
+                :key="team.ulid"
                 data-test="team-row"
                 class="flex items-center justify-between gap-4 rounded-lg border p-4"
             >
@@ -111,7 +111,7 @@ defineOptions({
                                     size="sm"
                                     as-child
                                 >
-                                    <Link :href="edit(team.slug)">
+                                    <Link :href="edit(team.ulid)">
                                         <Eye class="h-4 w-4" />
                                     </Link>
                                 </Button>
@@ -129,7 +129,7 @@ defineOptions({
                                     size="sm"
                                     as-child
                                 >
-                                    <Link :href="edit(team.slug)">
+                                    <Link :href="edit(team.ulid)">
                                         <Pencil class="h-4 w-4" />
                                     </Link>
                                 </Button>

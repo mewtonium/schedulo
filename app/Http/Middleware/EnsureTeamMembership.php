@@ -45,12 +45,17 @@ final class EnsureTeamMembership
 
         $requiredRole = TeamRole::tryFrom($minimumRole);
 
-        abort_if(
-            $requiredRole === null ||
-            $role === null ||
-            ! $role->isAtLeast($requiredRole),
-            403,
-        );
+        abort_unless($this->hasRequiredRole($role, $requiredRole), 403);
+    }
+
+    /**
+     * Determine whether the given role meets the required role.
+     */
+    protected function hasRequiredRole(?TeamRole $role, ?TeamRole $requiredRole): bool
+    {
+        return $role !== null
+            && $requiredRole !== null
+            && $role->isAtLeast($requiredRole);
     }
 
     /**
@@ -61,7 +66,7 @@ final class EnsureTeamMembership
         $team = $request->route('current_team') ?? $request->route('team');
 
         if (is_string($team)) {
-            $team = Team::where('slug', $team)->first();
+            $team = Team::where('ulid', $team)->first();
         }
 
         return $team;

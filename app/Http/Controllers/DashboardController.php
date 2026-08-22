@@ -29,7 +29,7 @@ final class DashboardController extends Controller
                 'inviterName' => $invitation->inviter->full_name,
                 'team' => [
                     'name' => $invitation->team->name,
-                    'slug' => $invitation->team->slug,
+                    'ulid' => $invitation->team->ulid,
                 ],
             ]);
 

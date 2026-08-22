@@ -6,7 +6,6 @@ namespace Database\Factories;
 
 use App\Models\Team;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 
 /**
  * @extends Factory<Team>
@@ -24,7 +23,6 @@ final class TeamFactory extends Factory
 
         return [
             'name' => $name,
-            'slug' => Str::slug($name),
             'is_personal' => false,
         ];
     }

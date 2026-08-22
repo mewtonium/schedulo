@@ -55,7 +55,7 @@ defineOptions({
             },
             {
                 title: props.team.name,
-                href: edit(props.team.slug),
+                href: edit(props.team.ulid),
             },
         ],
     }),
@@ -77,7 +77,7 @@ const pageTitle = computed(() =>
 );
 
 const updateMemberRole = (member: TeamMember, newRole: string) => {
-    router.visit(updateMember([props.team.slug, member.ulid]), {
+    router.visit(updateMember([props.team.ulid, member.ulid]), {
         data: { role: newRole },
         preserveScroll: true,
     });
@@ -109,7 +109,7 @@ const confirmCancelInvitation = (invitation: TeamInvitation) => {
             />
 
             <Form
-                v-bind="update.form(team.slug)"
+                v-bind="update.form(team.ulid)"
                 class="space-y-6"
                 v-slot="{ errors, processing }"
             >

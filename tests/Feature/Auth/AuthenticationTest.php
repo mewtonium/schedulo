@@ -41,6 +41,7 @@ test('login screen includes team invitation context', function () {
 
 test('users can authenticate using the login screen', function () {
     $user = User::factory()->create();
+    $team = $user->personalTeam();
 
     $response = $this->post(route('login.store'), [
         'email' => $user->email,
@@ -48,7 +49,7 @@ test('users can authenticate using the login screen', function () {
     ]);
 
     $this->assertAuthenticated();
-    $response->assertRedirect(route('dashboard'));
+    $response->assertRedirect(route('dashboard', ['current_team' => $team->ulid]));
 });
 
 test('passkey login response redirects to the current team dashboard', function () {
@@ -62,7 +63,7 @@ test('passkey login response redirects to the current team dashboard', function 
 
     $jsonResponse = app(PasskeyLoginResponse::class)->toResponse($request);
 
-    expect($jsonResponse->getData()->redirect)->toBe(route('dashboard', ['current_team' => $user->personalTeam()->slug]));
+    expect($jsonResponse->getData()->redirect)->toBe(route('dashboard', ['current_team' => $user->personalTeam()->ulid]));
 });
 
 test('users with two factor enabled are redirected to two factor challenge', function () {

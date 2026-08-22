@@ -6,7 +6,7 @@ import { register } from '@/routes';
 
 const page = usePage();
 const dashboardUrl = computed(() =>
-    page.props.currentTeam ? dashboard(page.props.currentTeam.slug).url : '/',
+    page.props.currentTeam ? dashboard(page.props.currentTeam.ulid).url : '/',
 );
 </script>
 

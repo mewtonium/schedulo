@@ -1,9 +1,8 @@
 export type TeamRole = 'owner' | 'admin' | 'member';
 
 export type Team = {
-    id: number;
+    ulid: string;
     name: string;
-    slug: string;
     isPersonal: boolean;
     role?: TeamRole;
     roleLabel?: string;
@@ -37,7 +36,7 @@ export type DashboardInvitation = {
     inviterName: string;
     team: {
         name: string;
-        slug: string;
+        ulid: string;
     };
 };
 

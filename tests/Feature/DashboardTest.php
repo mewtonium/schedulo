@@ -10,19 +10,17 @@ use Inertia\Testing\AssertableInertia as Assert;
 
 test('guests are redirected to the login page', function () {
     $user = User::factory()->create();
-    $team = $user->currentTeam;
 
-    $response = $this->get(route('dashboard'));
+    $response = $this->get(route('dashboard', ['current_team' => $user->currentTeam->ulid]));
     $response->assertRedirect(route('login'));
 });
 
 test('authenticated users can visit the dashboard', function () {
     $user = User::factory()->create();
-    $team = $user->currentTeam;
 
     $response = $this
         ->actingAs($user)
-        ->get(route('dashboard'));
+        ->get(route('dashboard', ['current_team' => $user->currentTeam->ulid]));
 
     $response->assertOk();
 });
@@ -42,7 +40,7 @@ test('dashboard includes pending invitations for the authenticated user', functi
 
     $response = $this
         ->actingAs($invitedUser)
-        ->get(route('dashboard'));
+        ->get(route('dashboard', ['current_team' => $invitedUser->personalTeam()->ulid]));
 
     $response->assertOk();
     $response->assertInertia(fn (Assert $page) => $page
@@ -51,7 +49,7 @@ test('dashboard includes pending invitations for the authenticated user', functi
         ->where('pendingInvitations.0.code', $invitation->code)
         ->where('pendingInvitations.0.inviterName', 'Taylor Otwell')
         ->where('pendingInvitations.0.team.name', 'Laravel Team')
-        ->where('pendingInvitations.0.team.slug', $team->slug)
+        ->where('pendingInvitations.0.team.ulid', $team->ulid)
         ->missing('pendingInvitations.0.teamName'),
     );
 });
@@ -71,7 +69,7 @@ test('dashboard does not include accepted invitations', function () {
 
     $response = $this
         ->actingAs($invitedUser)
-        ->get(route('dashboard'));
+        ->get(route('dashboard', ['current_team' => $invitedUser->personalTeam()->ulid]));
 
     $response->assertOk();
     $response->assertInertia(fn (Assert $page) => $page

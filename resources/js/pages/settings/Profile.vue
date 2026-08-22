@@ -44,7 +44,7 @@ const user = computed(() => page.props.auth.user);
             class="space-y-6"
             v-slot="{ errors, processing }"
         >
-            <div class="grid md:grid-cols-2 gap-4">
+            <div class="grid gap-4 md:grid-cols-2">
                 <div class="grid gap-2">
                     <Label for="first_name">First name</Label>
                     <Input
@@ -110,7 +110,12 @@ const user = computed(() => page.props.auth.user);
             </div>
 
             <div class="flex items-center gap-4">
-                <Button :disabled="processing" data-test="update-profile-button">Save</Button>
+                <Button
+                    :disabled="processing"
+                    data-test="update-profile-button"
+                >
+                    Save
+                </Button>
             </div>
         </Form>
     </div>

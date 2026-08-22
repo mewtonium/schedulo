@@ -34,23 +34,48 @@ test('teams can be created', function () {
     ]);
 });
 
-test('team slug uses next available suffix', function () {
+test('teams are routed by ulid rather than an incrementing id', function () {
     $user = User::factory()->create();
+    $team = Team::factory()->create();
 
-    Team::factory()->create(['name' => 'Acme', 'slug' => 'acme']);
-    Team::factory()->create(['name' => 'Acme One', 'slug' => 'acme-1']);
-    Team::factory()->create(['name' => 'Acme Ten', 'slug' => 'acme-10']);
+    $team->members()->attach($user, ['role' => TeamRole::Owner->value]);
+
+    expect(route('teams.edit', $team))
+        ->toContain($team->ulid)
+        ->not->toContain("/teams/{$team->id}");
 
     $this
         ->actingAs($user)
-        ->post(route('teams.store'), [
-            'name' => 'Acme',
-        ]);
+        ->get(route('teams.edit', $team))
+        ->assertOk();
+});
 
-    $this->assertDatabaseHas('teams', [
-        'name' => 'Acme',
-        'slug' => 'acme-11',
-    ]);
+test('renaming a team does not change its url', function () {
+    $user = User::factory()->create();
+    $team = Team::factory()->create(['name' => 'Original Name']);
+
+    $team->members()->attach($user, ['role' => TeamRole::Owner->value]);
+
+    $originalUrl = route('teams.edit', $team);
+
+    $this
+        ->actingAs($user)
+        ->patch(route('teams.update', $team), ['name' => 'A Completely Different Name'])
+        ->assertRedirect($originalUrl);
+
+    expect(route('teams.edit', $team->fresh()))->toBe($originalUrl);
+});
+
+test('a guessed team ulid is still rejected for non members', function () {
+    $outsider = User::factory()->create();
+    $team = Team::factory()->create();
+
+    $team->members()->attach(User::factory()->create(), ['role' => TeamRole::Owner->value]);
+
+    $this
+        ->actingAs($outsider)
+        ->get(route('teams.edit', $team))
+        ->assertForbidden();
 });
 
 test('the team edit page can be rendered', function () {
@@ -67,6 +92,8 @@ test('the team edit page can be rendered', function () {
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page
             ->component('teams/Edit')
+            ->where('team.ulid', $team->ulid)
+            ->missing('team.id')
             ->where('members.0.ulid', $user->ulid)
             ->missing('members.0.id')
             ->where('members.0.role', TeamRole::Owner->value)

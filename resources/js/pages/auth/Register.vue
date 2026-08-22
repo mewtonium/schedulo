@@ -28,7 +28,7 @@ defineOptions({
 const loginUrl = computed(() => {
     if (props.teamInvitation) {
         return login.url({
-            query: { invitation: props.teamInvitation.code }
+            query: { invitation: props.teamInvitation.code },
         });
     }
 
@@ -52,7 +52,7 @@ const loginUrl = computed(() => {
         class="flex flex-col gap-6"
     >
         <div class="grid gap-6">
-            <div class="grid md:grid-cols-2 gap-4">
+            <div class="grid gap-4 md:grid-cols-2">
                 <div class="grid gap-2">
                     <Label for="first_name">First name</Label>
                     <Input

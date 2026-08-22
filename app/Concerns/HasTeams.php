@@ -90,7 +90,7 @@ trait HasTeams
         $this->update(['current_team_id' => $team->id]);
         $this->setRelation('currentTeam', $team);
 
-        URL::defaults(['current_team' => $team->slug]);
+        URL::defaults(['current_team' => $team->ulid]);
 
         return true;
     }
@@ -152,9 +152,8 @@ trait HasTeams
         $role = $this->teamRole($team);
 
         return new UserTeam(
-            id: $team->id,
+            ulid: $team->ulid,
             name: $team->name,
-            slug: $team->slug,
             isPersonal: $team->is_personal,
             role: $role?->value,
             roleLabel: $role?->label(),

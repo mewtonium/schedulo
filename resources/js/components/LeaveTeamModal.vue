@@ -31,7 +31,7 @@ const leaveTeam = () => {
         return;
     }
 
-    router.visit(leaveTeamAction(props.team.slug), {
+    router.visit(leaveTeamAction(props.team.ulid), {
         onStart: () => (processing.value = true),
         onFinish: () => (processing.value = false),
         onSuccess: () => emit('update:open', false),

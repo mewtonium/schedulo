@@ -31,7 +31,7 @@ final class TeamMemberController extends Controller
 
         Inertia::flash('toast', ['type' => 'success', 'message' => __('Member role updated.')]);
 
-        return to_route('teams.edit', ['team' => $team->slug]);
+        return to_route('teams.edit', ['team' => $team->ulid]);
     }
 
     /**
@@ -53,6 +53,6 @@ final class TeamMemberController extends Controller
 
         Inertia::flash('toast', ['type' => 'success', 'message' => __('Member removed.')]);
 
-        return to_route('teams.edit', ['team' => $team->slug]);
+        return to_route('teams.edit', ['team' => $team->ulid]);
     }
 }

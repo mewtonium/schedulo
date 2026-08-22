@@ -49,21 +49,21 @@ const checkIconClass = computed(() =>
 const plusIconClass = computed(() => (props.inHeader ? 'size-4' : 'h-4 w-4'));
 
 const switchTeam = (team: Team) => {
-    const previousTeamSlug = currentTeam.value?.slug;
+    const previousTeamUlid = currentTeam.value?.ulid;
 
-    router.visit(switchMethod(team.slug), {
+    router.visit(switchMethod(team.ulid), {
         onFinish: () => {
-            if (!previousTeamSlug || typeof window === 'undefined') {
+            if (!previousTeamUlid || typeof window === 'undefined') {
                 router.reload();
 
                 return;
             }
 
             const currentUrl = `${window.location.pathname}${window.location.search}${window.location.hash}`;
-            const segment = `/${previousTeamSlug}`;
+            const segment = `/${previousTeamUlid}`;
 
             if (currentUrl.includes(segment)) {
-                router.visit(currentUrl.replace(segment, `/${team.slug}`), {
+                router.visit(currentUrl.replace(segment, `/${team.ulid}`), {
                     replace: true,
                 });
 
@@ -143,14 +143,14 @@ onUnmounted(() => {
             </DropdownMenuLabel>
             <DropdownMenuItem
                 v-for="team in teams"
-                :key="team.id"
+                :key="team.ulid"
                 data-test="team-switcher-item"
                 :class="teamItemClass"
                 @click="switchTeam(team)"
             >
                 {{ team.name }}
                 <Check
-                    v-if="currentTeam?.id === team.id"
+                    v-if="currentTeam?.ulid === team.ulid"
                     :class="checkIconClass"
                 />
             </DropdownMenuItem>
