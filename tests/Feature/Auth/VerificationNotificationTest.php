@@ -25,7 +25,12 @@ test('does not send verification notification if email is verified', function ()
 
     $this->actingAs($user)
         ->post(route('verification.send'))
-        ->assertRedirect('/dashboard');
+        ->assertRedirect(route('dashboard', ['current_team' => $user->personalTeam()->ulid]));
+
+    $this->actingAs($user)
+        ->followingRedirects()
+        ->post(route('verification.send'))
+        ->assertOk();
 
     Notification::assertNothingSent();
 });

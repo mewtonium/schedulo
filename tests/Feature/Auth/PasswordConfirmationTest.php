@@ -22,3 +22,19 @@ test('password confirmation requires authentication', function () {
 
     $response->assertRedirect(route('login'));
 });
+
+test('confirming a password with no intended url redirects to the current team dashboard', function () {
+    $user = User::factory()->create();
+
+    $response = $this
+        ->actingAs($user)
+        ->post(route('password.confirm.store'), ['password' => 'password']);
+
+    $response->assertRedirect(route('dashboard', ['current_team' => $user->personalTeam()->ulid]));
+
+    $this
+        ->actingAs($user)
+        ->followingRedirects()
+        ->post(route('password.confirm.store'), ['password' => 'password'])
+        ->assertOk();
+});

@@ -93,7 +93,7 @@ test('dashboard excludes expired invitations without deleting them', function ()
 
     $response = $this
         ->actingAs($invitedUser)
-        ->get(route('dashboard'));
+        ->get(route('dashboard', ['current_team' => $invitedUser->personalTeam()->ulid]));
 
     $response->assertOk();
     $response->assertInertia(fn (Assert $page) => $page
@@ -121,7 +121,7 @@ test('dashboard does not include or delete other users invitations', function ()
 
     $response = $this
         ->actingAs($invitedUser)
-        ->get(route('dashboard'));
+        ->get(route('dashboard', ['current_team' => $invitedUser->personalTeam()->ulid]));
 
     $response->assertOk();
     $response->assertInertia(fn (Assert $page) => $page

@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\URL;
+use Inertia\Testing\AssertableInertia as Assert;
 
 test('email verification screen can be rendered', function () {
     $user = User::factory()->unverified()->create();
@@ -70,13 +71,21 @@ test('email is not verified with invalid user id', function () {
 
 test('verified user is redirected to dashboard from verification prompt', function () {
     $user = User::factory()->create();
+    $team = $user->personalTeam();
 
     Event::fake();
 
     $response = $this->actingAs($user)->get(route('verification.notice'));
 
     Event::assertNotDispatched(Verified::class);
-    $response->assertRedirect('/dashboard');
+
+    $response->assertRedirect(route('dashboard', ['current_team' => $team->ulid]));
+
+    $this->actingAs($user)
+        ->followingRedirects()
+        ->get(route('verification.notice'))
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page->component('Dashboard'));
 });
 
 test('already verified user visiting verification link is redirected without firing event again', function () {
